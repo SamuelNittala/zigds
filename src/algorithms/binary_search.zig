@@ -1,4 +1,5 @@
 const std = @import("std");
+const debug_print = std.debug.print;
 
 pub fn binary_search(comptime T: type, array: []const T, key: T, left: usize, right: usize) bool {
     if (right >= left) {
@@ -31,5 +32,12 @@ test "should return true for the element at the end of the array" {
     const arr = [_]u32{ 2, 4, 23, 44, 55 };
     const end_ele = arr[arr.len - 1];
     const result = binary_search(u32, &arr, end_ele, 0, arr.len - 1);
+    try std.testing.expect(result == true);
+}
+
+test "should return true for a character present in a sorted string" {
+    const test_str = "abcdef";
+    const char: []const u8 = "d";
+    const result = binary_search(@TypeOf(test_str[0]), test_str, char[0], 0, test_str.len - 1);
     try std.testing.expect(result == true);
 }
