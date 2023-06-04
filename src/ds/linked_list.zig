@@ -28,8 +28,22 @@ fn print_list(head: *Node) void {
     }
 }
 
+fn reverse_list(head: ?*Node) ?*Node {
+    var prev: ?*Node = null;
+    var curr = head;
+    var next: ?*Node = null;
+    while (curr) |c| {
+        next = c.next;
+        c.next = prev;
+        prev = c;
+        curr = next;
+    }
+    return prev;
+}
+
 pub fn main() !void {
     var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
+
     defer arena.deinit();
 
     const allocator = arena.allocator();
@@ -42,5 +56,6 @@ pub fn main() !void {
     try append_node(allocator, head, 15);
     try append_node(allocator, head, 16);
     try append_node(allocator, head, 17);
-    print_list(head);
+    var new_head: ?*Node = reverse_list(head);
+    if (new_head) |nh| print_list(nh);
 }
